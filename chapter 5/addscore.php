@@ -18,8 +18,16 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $score = $_POST['score'];
     $screenshot = $_FILES['screenshot']['name'];
+    $screenshot_type = $_FILES['screenshot']['type'];
+    $screenshot_size = $_FILES['screenshot']['size'];
 
     if (!empty($name) && !empty($score) && !empty($screenshot)) {
+        if((($screenshot_type == 'image/jpeg') || ($screenshot_type == 'image/png') ||
+            ($screenshot_type == 'image/pjpeg') || ($screenshot_type == 'image/gif')) &&
+            ($screenshot_size > 0) && ($screenshot_size <=  GW_MAXFILESIZE)){
+
+
+        }
         $target = GW_UPLOADPATH . $screenshot;
         // Connect to the database
         if (move_uploaded_file($_FILES['screenshot']['tmp_name'], $target)) {

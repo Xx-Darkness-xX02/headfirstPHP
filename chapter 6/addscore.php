@@ -13,15 +13,17 @@
 require_once ('connectvars.php');
 require_once ('appvars.php');
 
+$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
 if (isset($_POST['submit'])) {
     // Grab the score data from the POST
-    $name = $_POST['name'];
-    $score = $_POST['score'];
-    $screenshot = $_FILES['screenshot']['name'];
+    $name = mysqli_real_escape_string($dbc, trim($_POST['name']));
+    $score = mysqli_real_escape_string($dbc, trim($_POST['score']));
+    $screenshot = mysqli_real_escape_string($dbc, trim($_FILES['screenshot']['name']));
     $screenshot_type = $_FILES['screenshot']['type'];
     $screenshot_size = $_FILES['screenshot']['size'];
 
-    if (!empty($name) && !empty($score) && !empty($screenshot)) {
+    if (!empty($name) && is_numeric($score) && !empty($screenshot)) {
         if((($screenshot_type == 'image/jpeg') || ($screenshot_type == 'image/png') ||
             ($screenshot_type == 'image/pjpeg') || ($screenshot_type == 'image/gif')) &&
             ($screenshot_size > 0) && ($screenshot_size <=  GW_MAXFILESIZE)){
@@ -34,7 +36,7 @@ if (isset($_POST['submit'])) {
             $dbc = mysqli_connect('localhost', 'root', '', 'gwdb');
 
             // Write the data to the database
-            $query = "INSERT INTO guitarwars VALUES (0, NOW(), '$name', '$score', '$screenshot', 0)";
+            $query = "INSERT INTO guitarwars VALUES (NOW(), '$name', '$score', '$screenshot')";
             mysqli_query($dbc, $query);
 
             // Confirm success with the user

@@ -32,7 +32,7 @@
         mysqli_query($dbc, $query);
 
         // Confirm success with the user
-        echo '<p>Your new account has been successfully created. You\'re now ready to log in and <a href="editprofile.php">edit your profile</a>.</p>';
+        echo '<p>Your new account has been successfully created. You\'re now ready to <a href="login.php">log in</a>.</p>';
 
         mysqli_close($dbc);
         exit();
